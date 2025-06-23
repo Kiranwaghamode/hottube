@@ -61,6 +61,11 @@ const FormSectionSkeleton = () =>{
 
 
     const router = useRouter()
+
+    const [thumbnailModalOpen, setThumbnailModalOpen] = useState(false)
+
+
+
     const [video] = trpc.studio.getOne.useSuspenseQuery({id: videoId})
     const [categories] = trpc.categories.getMany.useSuspenseQuery()
 
@@ -114,7 +119,9 @@ const FormSectionSkeleton = () =>{
     return(
         <>
         <ThumbnailUploadModal
-        
+        videoId={videoId}
+        open={thumbnailModalOpen}
+        onOpenChange={setThumbnailModalOpen}
         />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -212,7 +219,7 @@ const FormSectionSkeleton = () =>{
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="start" side="right">
-                                                    <DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={()=> setThumbnailModalOpen(true)}>
                                                         <ImagePlusIcon className="size-4 mr-1"/>
                                                         Change
                                                     </DropdownMenuItem>

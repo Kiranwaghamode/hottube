@@ -1,4 +1,6 @@
 import { ResponsiveModal } from "@/components/responsive-modal";
+import { UploadDropzone } from "@/lib/uploadthing";
+import { trpc } from "@/trpc/client";
 
 interface ThumbnailUploadModalProps {
     videoId: string;
@@ -13,13 +15,29 @@ export const ThumbnailUploadModal = ({
     onOpenChange
 }: ThumbnailUploadModalProps) =>{
 
+
+    const utils = trpc.useUtils()
+
+    const onUploadComplete = () =>{
+        utils.studio.getMany.invalidate()
+        utils.studio.getOne.invalidate({ id: videoId})
+        onOpenChange(false)
+    }
+
+
+
+
     return (
         <ResponsiveModal
         title="Upload the thumbnail"
         open={open}
         onOpenChange={onOpenChange}
         >
-            <p>Hello!</p>
+            <UploadDropzone
+            endpoint={'thumbnailUplaoder'}
+            input={{ videoId }}
+            onClientUploadComplete={onUploadComplete}
+            />
         </ResponsiveModal>
     )
 }
