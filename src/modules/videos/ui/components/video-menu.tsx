@@ -6,11 +6,12 @@ import {
     DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
 import { ListPlusIcon, MoreVerticalIcon, ShareIcon, Trash2Icon } from "lucide-react"
+import { toast } from "sonner"
 
 interface VideoMenuProps {
     videoId: string,
     variant: 'ghost' | 'secondary',
-    onRemove: ()=> void
+    onRemove?: ()=> void
 }
 
 
@@ -21,6 +22,16 @@ export const VideoMenu = ({
     variant,
     onRemove
 }: VideoMenuProps) =>{
+
+
+    const onShare = ()=>{
+    const fullUrl = `${process.env.VERCEL_URL || "http://localhost:3000"}/videos/${videoId}`
+
+    navigator.clipboard.writeText(fullUrl)
+    toast.success("Link Copied to your clipboard")
+
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -29,7 +40,7 @@ export const VideoMenu = ({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end"  onClick={(e) => e.stopPropagation()}>
-                <DropdownMenuItem onClick={()=>{}}>
+                <DropdownMenuItem onClick={onShare}>
                      <ShareIcon className="mr-2 size-4"/>
                      Share
                 </DropdownMenuItem>
@@ -37,10 +48,12 @@ export const VideoMenu = ({
                      <ListPlusIcon className="mr-2 size-4"/>
                      Add to playlist
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={()=>{}}>
-                     <Trash2Icon className="mr-2 size-4"/>
-                     Remove
-                </DropdownMenuItem>
+                {onRemove && (
+                    <DropdownMenuItem onClick={()=>{}}>
+                        <Trash2Icon className="mr-2 size-4"/>
+                        Remove
+                    </DropdownMenuItem>
+                )}
 
             </DropdownMenuContent>
         </DropdownMenu>
