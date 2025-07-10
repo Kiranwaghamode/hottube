@@ -21,14 +21,14 @@ export const VideoPlayer = ({
 
     return (
         <MuxPlayer
-        playbackId={playbackId || ""}
-        poster={thumbnailUrl || THUMBNAIL_FALLBACK}
-        playerInitTime={0}
-        autoPlay={autoPlay}
-        thumbnailTime={0}
-        accentColor='#FF2056'
-        className='w-full h-full object-contain'
-        onPlay={onPlay}
+            playbackId={playbackId || ""}
+            poster={thumbnailUrl || THUMBNAIL_FALLBACK}
+            playerInitTime={0}
+            autoPlay={autoPlay}
+            thumbnailTime={0}
+            accentColor='#FF2056'
+            className='w-full h-full object-contain'
+            onPlay={onPlay}
         
         />
     )

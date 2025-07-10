@@ -2,7 +2,6 @@ import { db } from "@/db";
 import { videos } from "@/db/schema";
 import { serve } from "@upstash/workflow/nextjs"
 import { and, eq } from "drizzle-orm";
-import OpenAI from 'openai';
 
 
 interface InputType {
@@ -25,7 +24,7 @@ export const { POST } = serve(
     const {userId, videoId} = input;
 
 
-    const video = context.run("get-video", async()=>{
+    const [video] = await context.run("get-video", async()=>{
       const existingVideo = await db
               .select()
               .from(videos)
@@ -39,39 +38,7 @@ export const { POST } = serve(
       return existingVideo;
     })
 
-    const generateTitle = context.run("generate-title", async () =>{
-      const openai = new OpenAI({
-        baseURL: 'https://openrouter.ai/api/v1',
-        apiKey: process.env.OPENROUTER_API_KEY!,
-      });
-
-      const generatedResponse = await openai.chat.completions.create({
-      model: "mistralai/mistral-7b-instruct", 
-      max_tokens: 200,            
-      messages: [
-        {
-          role: 'system',
-          content: TITLE_SYSTEM_PROMPT
-        },
-        {
-          role: 'user',
-          content: 'This is the video that teach you to build youtube clone',
-        },
-      ],
-    });
-
-    console.log(generatedResponse.choices[0].message)
-    })
-    
-
-    
-
-    // const title = generatedResponse.choices[0].message 
 
 
-    await context.run("update-video-title",async () => {
-      console.log('nothign')
-      
-    })
   }
 )
