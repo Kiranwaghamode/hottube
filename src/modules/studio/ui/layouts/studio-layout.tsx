@@ -16,7 +16,7 @@ export const StudioLayout = ({children }: StudioLayoutProps) => {
         </div>
         <div className='flex min-h-screen pt-[4rem] left-0'>
             <StudioSidebar/>
-            <main className='flex overflow-y-auto overflow-x-hidden w-full'>
+            <main className='flex overflow-y-auto overflow-x-hidden w-full relative'>
             {children}
             </main>
         </div>

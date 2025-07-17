@@ -30,7 +30,7 @@ const VideosSectionSkeleton = () =>{
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="pl-6 w-[718px]">Video</TableHead>
+                            <TableHead className="pl-6 w-[786px]">Video</TableHead>
                             <TableHead >Visibility</TableHead>
                             <TableHead >Status</TableHead>
                             <TableHead >Date</TableHead>
