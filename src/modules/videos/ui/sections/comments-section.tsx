@@ -1,6 +1,7 @@
 'use client'
 
 import { CommentForm } from "@/modules/comments/ui/components/comment-form";
+import { CommentItem } from "@/modules/comments/ui/components/comment-item";
 import { trpc } from "@/trpc/client"
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -39,9 +40,6 @@ export const CommentsSectionSuspense = ({videoId}: commentsSectionProps) =>{
 
                 </div>
             </div>
-
-
-            {JSON.stringify(comments)}
         </div>
     )
 }
