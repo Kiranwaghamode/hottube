@@ -143,30 +143,27 @@ export const CommentItem = ({comment, variant="comment"}: CommentItemProps) =>{
                         )}
                     </div>
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild >
-                        <Button variant={'ghost'} size={'icon'} className="size-8">
-                            <MoreVerticalIcon/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {variant === 'comment' && (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild >
+                            <Button variant={'ghost'} size={'icon'} className="size-8">
+                                <MoreVerticalIcon/>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={()=>setIsReplyOpen(true)}>
+                                    <MessageSquareIcon className="size-4"/>
+                                    Reply
+                                </DropdownMenuItem>
+                            
+                            {comment.user.clerkId === userId && (
+                                <DropdownMenuItem onClick={()=> remove.mutate({ id: comment.id})}>
+                                    <Trash2Icon className="size-4"/>
+                                    Delete
+                                </DropdownMenuItem>
+                            )}
+                        </DropdownMenuContent>
+                    </DropdownMenu>                
 
-
-                            <DropdownMenuItem onClick={()=>setIsReplyOpen(true)}>
-                            <MessageSquareIcon className="size-4"/>
-                            Reply
-                        </DropdownMenuItem>
-                        )}
-                        {comment.user.clerkId === userId && (
-                            <DropdownMenuItem onClick={()=> remove.mutate({ id: comment.id})}>
-                                <Trash2Icon className="size-4"/>
-                                Delete
-                            </DropdownMenuItem>
-                        )}
-                         
-                    </DropdownMenuContent>
-                </DropdownMenu>
             </div>
             {isReplyOpen && variant=='comment' && (
                 <div className="mt-4 pl-14">
