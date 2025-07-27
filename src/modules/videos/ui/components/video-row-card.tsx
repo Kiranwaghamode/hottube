@@ -32,7 +32,7 @@ const thumbnailVariants = cva('relative flex-none', {
     variants: {
         size: {
             default: 'w-[38%]',
-            compact: 'w-[168px]'
+            compact: 'w-[100px]'
         },
     },
     defaultVariants: {
