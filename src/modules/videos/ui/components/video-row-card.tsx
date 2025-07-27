@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/tooltip'
 import { UserInfo } from "@/modules/users/ui/components/user-info"
 import { UserAvatar } from "@/components/user-avatar"
-import { VideoThumbnail } from "./video-thumbnail"
+import { VideoThumbnail, VideoThumbnailSkeleton } from "./video-thumbnail"
 import { VideoGetManyOutput } from "../../types"
 import { VideoMenu } from "./video-menu"
 
@@ -48,10 +48,41 @@ interface videoRowCardProps extends VariantProps<typeof videoRowCardVariants>{
 }
 
 
-export const VideoRowCardSkeleton = () =>{
+export const VideoRowCardSkeleton = ({size = 'default'}:VariantProps<typeof videoRowCardVariants>) =>{
     return (
-        <div>
-            <Skeleton/>
+        <div className={videoRowCardVariants({size})}>
+            {/* <Skeleton/> */}
+            {/* Thumbnail Skeleton */}
+            <div className={thumbnailVariants({size})}>
+                <VideoThumbnailSkeleton/>
+            </div>
+
+            {/* Info Skeleton */}
+            <div className="flex-1 min-w-0">
+                <div className="flex justify-between gap-x-2 ">
+                    <div className="flex-1 min-w-0">
+                        <Skeleton
+                        className={cn('h-5 w-[40%] ', size==='compact' && 'h-4 w-[40%]')}
+                        />
+                    {size === 'default' && (
+                        <>
+                        <Skeleton className="h-4 w-[20%] mt-1 "/>
+                        <div className="flex items-center gap-2 my-3 ">
+                            <Skeleton className="size-8 rounded-full"/>
+                            <Skeleton className="h-4 w-24"/>
+                        </div>
+                        </>
+                    )}
+                    {size === 'compact' && (
+                        <>
+                        <Skeleton className="h-4 w-[50%] mt-1"/>
+                        </>
+                    )}
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     )
 }
@@ -59,7 +90,7 @@ export const VideoRowCardSkeleton = () =>{
 
 export const VideoRowCard = ({
     data,
-    size,
+    size = 'default',
     onRemove
 }: videoRowCardProps) =>{
     const compactViews = useMemo(()=> {
@@ -111,22 +142,21 @@ export const VideoRowCard = ({
                             name={data.user.name}
                             />
                             <UserInfo size={'sm'} name={data.user.name}/>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <p className="text-xs text-muted-foreground w-fit line-clamp-2">
-                                        {data.description ?? "No descriptions"}
-                                    </p>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                side="bottom"
-                                align="center"
-                                className="bg-black/70"
-                                >
-                                    <p>From the video description</p>
-                                </TooltipContent>
-                            </Tooltip>
-
                         </div>
+                        <Tooltip>
+                        <TooltipTrigger asChild>
+                            <h5 className="text-xs text-muted-foreground ">
+                                {data.description ?? "No descriptions"}
+                            </h5>
+                        </TooltipTrigger>
+                        <TooltipContent
+                        side="bottom"
+                        align="center"
+                        className="bg-black/70"
+                        >
+                        <p>From the video description</p>
+                        </TooltipContent>
+                        </Tooltip>
                         </>
                     )}
                     {size === 'compact' && (

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { trpc } from "@/trpc/client"
-import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCcw, SparklesIcon, TrashIcon } from "lucide-react"
+import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCcw, RotateCcwIcon, SparklesIcon, TrashIcon } from "lucide-react"
 import { Suspense, useState } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useForm } from "react-hook-form"
@@ -36,6 +36,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants"
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal"
+import { APP_URL } from "@/constatns"
 
 interface FormSectionProps {
     videoId: string
@@ -93,6 +94,17 @@ const FormSectionSkeleton = () =>{
         }
     })
 
+    const revalidate = trpc.videos.revalidate.useMutation({
+        onSuccess: ()=>{
+            utils.studio.getMany.invalidate();
+            utils.studio.getOne.invalidate({id: videoId});
+            toast.success("Vidio Revalidated Successfully!")
+        },
+        onError: () =>{
+            toast.error("Something Went Wrong")
+        }
+    })
+
     const restoreThumbnail = trpc.videos.restoreThumbnail.useMutation({
         onSuccess: ()=>{
             utils.studio.getMany.invalidate();
@@ -125,7 +137,7 @@ const FormSectionSkeleton = () =>{
         update.mutate(data)
     }
 
-    const fullUrl = `${process.env.VERCEL_URL || "http://localhost:3000"}/videos/${videoId}`
+    const fullUrl = `${APP_URL || "http://localhost:3000"}/videos/${videoId}`
     const [isCopied, setIsCopied] = useState(false)
 
     const onCopy =async () =>{
@@ -162,9 +174,13 @@ const FormSectionSkeleton = () =>{
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onClick={()=> revalidate.mutate({id: videoId})} >
+                                        <RotateCcwIcon className="size-4 mr-2"/>
+                                        Revalidate
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem onClick={()=> remove.mutate({id: videoId})} >
                                         <TrashIcon className="size-4 mr-2"/>
-                                        Delete
+                                        Remove
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

@@ -56,20 +56,21 @@ const VideoSectionSuspense = ({videoId}: VideoSectionProps) =>{
 
 
     return (
-        <div className={cn(
-            'aspect-video  rounded-xl  relative',
-            video.muxStatus !== "ready" && 'rounded-b-none'
-        )}>
+        <>
+            <div className={cn(
+                'aspect-video overflow-hidden bg-black rounded-xl  relative',
+                video.muxStatus !== "ready" && 'rounded-b-none'
+            )}>
 
-            <VideoPlayer 
-            autoPlay
-            onPlay={handlePlay}
-            playbackId={video.muxPlaybackId}
-            thumbnailUrl={video.thumbnailUrl}
-            />
+                <VideoPlayer 
+                autoPlay
+                onPlay={handlePlay}
+                playbackId={video.muxPlaybackId}
+                thumbnailUrl={video.thumbnailUrl}
+                />
+            </div>
             <VideoBanner status={video.muxStatus} />
-            <VideoTopRow video={video}/>
-
-        </div>
+            <VideoTopRow video={video} />
+        </>
     )
 }
