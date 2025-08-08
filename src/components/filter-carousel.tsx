@@ -51,7 +51,7 @@ export const FilterCarousel = ({value, isLoading, onSelect, data}: FilterCarouse
                 align: 'start',
                 dragFree: true
             }}
-            className="w-full px-12 max-w-screen-xl "
+            className="w-screen px-12 max-w-screen-xl "
             >
                 <CarouselContent className="-ml-3">
                     {!isLoading && (
@@ -94,7 +94,7 @@ export const FilterCarousel = ({value, isLoading, onSelect, data}: FilterCarouse
                     ))}
                 </CarouselContent>
                 <CarouselPrevious className="left-0 z-20"/>
-                <CarouselNext className="right-0 z-20"/>
+                <CarouselNext className="right-4 z-20"/>
 
             </Carousel>
         </div>

@@ -32,7 +32,7 @@ const thumbnailVariants = cva('relative flex-none', {
     variants: {
         size: {
             default: 'w-[38%]',
-            compact: 'w-[100px]'
+            compact: 'w-[200px]'
         },
     },
     defaultVariants: {
@@ -62,7 +62,7 @@ export const VideoRowCardSkeleton = ({size = 'default'}:VariantProps<typeof vide
                 <div className="flex justify-between gap-x-2 ">
                     <div className="flex-1 min-w-0">
                         <Skeleton
-                        className={cn('h-5 w-[40%] ', size==='compact' && 'h-4 w-[40%]')}
+                        className={cn('h-5 w-[200px] ', size==='compact' && 'h-4 w-[200px]')}
                         />
                     {size === 'default' && (
                         <>
@@ -164,7 +164,7 @@ export const VideoRowCard = ({
                     )}
                     {size === 'compact' && (
                         <p className="text-xs text-muted-foreground mt-1">
-                            {compactViews} views • {compactLikes}
+                            {compactViews} views • {compactLikes} likes
                         </p>
                     )}
                     </Link>
