@@ -7,6 +7,134 @@ import { z } from 'zod'
 
 export const playlistsRouter = createTRPCRouter({
 
+  getOne: protectedProcedure
+    .input(z.object({ id: z.string().uuid()}))
+    .query(async ({input, ctx}) =>{
+      const { id } = input;
+      const {id : userId } = ctx.user;
+
+      const [existingPlaylist] = await db
+        .select()
+        .from(playlists)
+        .where(and(
+          eq(playlists.id, id),
+          eq(playlists.userId, userId)
+        ))
+        
+
+      if(!existingPlaylist) throw new TRPCError({ code: "NOT_FOUND"})
+
+      return existingPlaylist;
+
+    }),
+
+  remove: protectedProcedure
+    .input(z.object({ id: z.string().uuid()}))
+    .mutation(async ({input, ctx}) =>{
+      const { id } = input;
+      const {id : userId } = ctx.user;
+
+      const [deletedPlaylist] = await db
+        .delete(playlists)
+        .where(and(
+          eq(playlists.id, id),
+          eq(playlists.userId, userId)
+        ))
+        .returning()
+        
+
+      if(!deletedPlaylist) throw new TRPCError({ code: "NOT_FOUND"})
+
+      return deletedPlaylist;
+
+    }),
+
+  getVideos: protectedProcedure
+    .input(
+      z.object({
+        playlistId: z.string().uuid(),
+        cursor: z.object({
+            id: z.string().uuid(),
+            updatedAt: z.date(),
+        })
+        .nullish(),
+        limit: z.number().min(1).max(100)
+      })  
+    )
+    .query(async({ input, ctx})=>{
+      const { cursor, limit, playlistId} = input;
+      const { id: userId } = ctx.user;
+
+
+      const [existingPlaylist] = await db
+        .select()
+        .from(playlists)
+        .where(and(
+          eq(playlists.id, playlistId),
+          eq(playlists.userId, userId),
+        ))
+
+      
+      if(!existingPlaylist) throw new TRPCError({code: "NOT_FOUND"})
+
+      const videosFromPlaylist = db.$with("playlist_videos").as(
+        db
+            .select({
+                videoId: playlistVideos.videoId,
+            })
+            .from(playlistVideos)
+            .where(eq(playlistVideos.playlistId, playlistId))
+      )
+
+
+        const data = await db
+        .with(videosFromPlaylist)
+        .select({
+        ...getTableColumns(videos),
+        user: users,
+        viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
+        likeCount: db.$count(videoReactions, and(
+          eq(videoReactions.videoId, videos.id),
+          eq(videoReactions.type, 'like')
+        )),
+        dislikeCount: db.$count(videoReactions, and(
+          eq(videoReactions.videoId, videos.id),
+          eq(videoReactions.type, 'dislike')
+        ))
+        
+        })
+        .from(videos)
+        .innerJoin(users, eq(videos.userId, users.id))
+        .innerJoin(videosFromPlaylist, eq(videos.id, videosFromPlaylist.videoId))
+        .where(and(
+          eq(videos.visibility, 'public'),
+          cursor ? or(
+            lt(videos.updatedAt , cursor.updatedAt),
+            and(
+              eq(videos.updatedAt, cursor.updatedAt),
+              lt(videos.id, cursor.id)
+            )
+          ) : undefined
+        )).orderBy(desc(videos.updatedAt), desc(videos.id))
+        .limit(limit + 1);
+
+        const hasMore = data.length > limit;
+
+        const items = hasMore ? data.slice(0, -1) : data;
+
+        const lastItem = items[items.length -1]
+        const nextCursor = hasMore 
+        ? {
+            id: lastItem.id,
+            updatedAt: lastItem.updatedAt
+          }: null;
+
+        return {
+          items,
+          nextCursor
+        }
+    }),
+
    removeVideo: protectedProcedure
     .input(z.object({
       playlistId : z.string().uuid(),
@@ -335,80 +463,80 @@ export const playlistsRouter = createTRPCRouter({
         }
     }),
 
-    getHistory: protectedProcedure
-      .input(
-        z.object({
-          cursor: z.object({
-              id: z.string().uuid(),
-              viewedAt: z.date(),
-          })
-          .nullish(),
-          limit: z.number().min(1).max(100)
-        })  
+  getHistory: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.object({
+            id: z.string().uuid(),
+            viewedAt: z.date(),
+        })
+        .nullish(),
+        limit: z.number().min(1).max(100)
+      })  
+    )
+    .query(async({ input, ctx})=>{
+      const { cursor, limit} = input;
+      const { id: userId } = ctx.user;
+
+      const viewerVideoViews = db.$with("viewer_video_views").as(
+        db
+            .select({
+                videoId: videoViews.videoId,
+                viewedAt: videoViews.updatedAt,
+            })
+            .from(videoViews)
+            .where(eq(videoViews.userId, userId))
       )
-      .query(async({ input, ctx})=>{
-        const { cursor, limit} = input;
-        const { id: userId } = ctx.user;
-
-        const viewerVideoViews = db.$with("viewer_video_views").as(
-          db
-              .select({
-                  videoId: videoViews.videoId,
-                  viewedAt: videoViews.updatedAt,
-              })
-              .from(videoViews)
-              .where(eq(videoViews.userId, userId))
-        )
 
 
-          const data = await db
-          .with(viewerVideoViews)
-          .select({
-          ...getTableColumns(videos),
-          user: users,
-          viewedAt: viewerVideoViews.viewedAt,
-          viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
-          likeCount: db.$count(videoReactions, and(
-            eq(videoReactions.videoId, videos.id),
-            eq(videoReactions.type, 'like')
-          )),
-          dislikeCount: db.$count(videoReactions, and(
-            eq(videoReactions.videoId, videos.id),
-            eq(videoReactions.type, 'dislike')
-          ))
-          
-          })
-          .from(videos)
-          .innerJoin(users, eq(videos.userId, users.id))
-          .innerJoin(viewerVideoViews, eq(videos.id, viewerVideoViews.videoId))
-          .where(and(
-            eq(videos.visibility, 'public'),
-            cursor ? or(
-              lt(viewerVideoViews.viewedAt , cursor.viewedAt),
-              and(
-                eq(viewerVideoViews.viewedAt, cursor.viewedAt),
-                lt(videos.id, cursor.id)
-              )
-            ) : undefined
-          )).orderBy(desc(viewerVideoViews.viewedAt), desc(videos.id))
-          .limit(limit + 1);
+        const data = await db
+        .with(viewerVideoViews)
+        .select({
+        ...getTableColumns(videos),
+        user: users,
+        viewedAt: viewerVideoViews.viewedAt,
+        viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
+        likeCount: db.$count(videoReactions, and(
+          eq(videoReactions.videoId, videos.id),
+          eq(videoReactions.type, 'like')
+        )),
+        dislikeCount: db.$count(videoReactions, and(
+          eq(videoReactions.videoId, videos.id),
+          eq(videoReactions.type, 'dislike')
+        ))
+        
+        })
+        .from(videos)
+        .innerJoin(users, eq(videos.userId, users.id))
+        .innerJoin(viewerVideoViews, eq(videos.id, viewerVideoViews.videoId))
+        .where(and(
+          eq(videos.visibility, 'public'),
+          cursor ? or(
+            lt(viewerVideoViews.viewedAt , cursor.viewedAt),
+            and(
+              eq(viewerVideoViews.viewedAt, cursor.viewedAt),
+              lt(videos.id, cursor.id)
+            )
+          ) : undefined
+        )).orderBy(desc(viewerVideoViews.viewedAt), desc(videos.id))
+        .limit(limit + 1);
 
-          const hasMore = data.length > limit;
+        const hasMore = data.length > limit;
 
-          const items = hasMore ? data.slice(0, -1) : data;
+        const items = hasMore ? data.slice(0, -1) : data;
 
-          const lastItem = items[items.length -1]
-          const nextCursor = hasMore 
-          ? {
-              id: lastItem.id,
-              viewedAt: lastItem.viewedAt
-            }: null;
+        const lastItem = items[items.length -1]
+        const nextCursor = hasMore 
+        ? {
+            id: lastItem.id,
+            viewedAt: lastItem.viewedAt
+          }: null;
 
-          return {
-            items,
-            nextCursor
-          }
-      }),
+        return {
+          items,
+          nextCursor
+        }
+    }),
 
     
 
