@@ -57,7 +57,7 @@ const LikedVideosSectionSuspense = () =>{
 
 
     return (
-        <div>
+        <>
             <div 
             className="flex flex-col gap-4 gap-y-10 md:hidden"
             >
@@ -74,7 +74,7 @@ const LikedVideosSectionSuspense = () =>{
                 {videos.pages
                 .flatMap((page)=> page.items)
                 .map((video)=>(
-                    <VideoRowCard key={video.id} data={video} size={'compact'}  />
+                    <VideoRowCard key={video.id} data={video}  />
                 ))
                 }
             </div>
@@ -83,6 +83,6 @@ const LikedVideosSectionSuspense = () =>{
             isFetchingNextPage={query.isFetchingNextPage}
             fetchNextPage={query.fetchNextPage }
             />
-        </div>
+        </>
     )
 }

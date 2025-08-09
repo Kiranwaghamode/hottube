@@ -24,7 +24,6 @@ const HistoryVideosSectionSkeleton = () =>{
     return (
         <>
         <div>
-
             <div className="flex flex-col gap-4 gap-y-10 md:hidden">
                 {Array.from({length: 18})
                 .map((_, index)=>(
@@ -74,7 +73,7 @@ const HistoryVideosSectionSuspense = () =>{
                 {videos.pages
                 .flatMap((page)=> page.items)
                 .map((video)=>(
-                    <VideoRowCard key={video.id} data={video}  />
+                    <VideoRowCard key={video.id} data={video}/>
                 ))
                 }
             </div>
