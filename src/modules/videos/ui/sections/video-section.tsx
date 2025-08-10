@@ -28,8 +28,10 @@ export const VideoSection = ({videoId}: VideoSectionProps) =>{
 export const VideoSectionSkeleton = ()=>{
     return (
         <>
-        <VideoPlayerSkeleton/>
-        <VideoTopRowSkeleton/>
+        <div >
+            <VideoPlayerSkeleton/>
+            <VideoTopRowSkeleton/>
+        </div>
         </>
     )
 }
