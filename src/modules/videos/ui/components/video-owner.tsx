@@ -52,7 +52,7 @@ export const VideoOwner = ({user, videoId}: VideoOwnerProps) =>{
                 onClick={onClick}
                 disabled={isPending || !isLoaded}
                 isSubscribed={user.viewerSubscribed}
-                clasName="flex-none"
+                className="flex-none"
                 />
             )}
 

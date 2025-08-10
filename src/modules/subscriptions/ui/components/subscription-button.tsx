@@ -6,7 +6,7 @@ interface SubscriptionButtonProps {
     onClick: ButtonProps['onClick'],
     disabled: boolean,
     isSubscribed: boolean,
-    clasName?: string,
+    className?: string,
     size?: ButtonProps["size"]
 }
 
@@ -15,13 +15,13 @@ export const SubscriptionButton = ({
     onClick,
     disabled,
     isSubscribed,
-    clasName,
+    className,
     size
 }: SubscriptionButtonProps) =>{
     return (
         <Button
         variant={isSubscribed ? 'secondary' : 'default'}
-        className={cn('rounded-full', clasName)}
+        className={cn('rounded-full', className)}
         onClick={onClick}
         disabled={disabled}
         >
