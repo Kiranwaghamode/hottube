@@ -41,7 +41,7 @@ export const FilterCarousel = ({value, isLoading, onSelect, data}: FilterCarouse
         api.on("select", ()=>{
             setCurrent(api.selectedScrollSnap() + 1)
         })
-    }, [api])
+    }, [api, current, count])
 
     return (
         <div className="relative w-full ">

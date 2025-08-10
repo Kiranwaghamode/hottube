@@ -10,13 +10,13 @@ interface InputType {
 }
 
 
-const TITLE_SYSTEM_PROMPT = `Your task is to generate an SEO-focused title for a YouTube video based on its transcript. Please follow these guidelines:
-- Be concise but descriptive, using relevant keywords to improve discoverability.
-- Highlight the most compelling or unique aspect of the video content.
-- Avoid jargon or overly complex language unless it directly supports searchability.
-- Use action-oriented phrasing or clear value propositions where applicable.
-- Ensure the title is 3-8 words long and no more than 100 characters.
-- ONLY return the title as plain text. Do not add quotes or any additional formatting.`;
+// const TITLE_SYSTEM_PROMPT = `Your task is to generate an SEO-focused title for a YouTube video based on its transcript. Please follow these guidelines:
+// - Be concise but descriptive, using relevant keywords to improve discoverability.
+// - Highlight the most compelling or unique aspect of the video content.
+// - Avoid jargon or overly complex language unless it directly supports searchability.
+// - Use action-oriented phrasing or clear value propositions where applicable.
+// - Ensure the title is 3-8 words long and no more than 100 characters.
+// - ONLY return the title as plain text. Do not add quotes or any additional formatting.`;
 
 export const { POST } = serve(
   async (context) => {
@@ -24,7 +24,7 @@ export const { POST } = serve(
     const {userId, videoId} = input;
 
 
-    const [video] = await context.run("get-video", async()=>{
+    await context.run("get-video", async()=>{
       const existingVideo = await db
               .select()
               .from(videos)
@@ -37,8 +37,5 @@ export const { POST } = serve(
       
       return existingVideo;
     })
-
-
-
   }
 )

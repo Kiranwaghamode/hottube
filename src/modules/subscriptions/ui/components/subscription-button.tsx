@@ -23,6 +23,7 @@ export const SubscriptionButton = ({
         variant={isSubscribed ? 'secondary' : 'default'}
         className={cn('rounded-full', className)}
         onClick={onClick}
+        size={size}
         disabled={disabled}
         >
             {isSubscribed ? "Unsubscribe" : "Subscribe"}

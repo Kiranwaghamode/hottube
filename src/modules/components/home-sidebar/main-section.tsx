@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import {  SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { Flame, HomeIcon, PlaySquareIcon } from "lucide-react";
 import { useClerk, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
@@ -51,7 +51,7 @@ export const MainSection = () =>{
                                     }
                                 }}
                                 >
-                                <Link href={item.url} className="flex items-center gap-4">
+                                <Link prefetch href={item.url} className="flex items-center gap-4">
                                 <item.icon/>
                                 <span className="text-sm">{item.title}</span>
                                 </Link>

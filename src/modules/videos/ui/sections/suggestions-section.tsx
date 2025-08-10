@@ -13,7 +13,7 @@ interface SuggestionsSectionProps {
     isManual?: boolean;
 }
 
-export const SuggestionsSection = ({videoId, isManual}: SuggestionsSectionProps) => {
+export const SuggestionsSection = ({videoId}: SuggestionsSectionProps) => {
     return (
         <Suspense fallback={<SuggestionsSectionSkeleton/>}>
             <ErrorBoundary fallback={<p>Error...</p>}>

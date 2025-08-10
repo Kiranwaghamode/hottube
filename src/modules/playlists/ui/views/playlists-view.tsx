@@ -21,7 +21,7 @@ export const PlaylistsView = ()=>{
                 <div>
                     <h1 className="text-2xl font-bold">Playlists</h1>
                     <p className="text-xs text-muted-foreground">
-                        Collections you've created
+                        Collections you have created
                     </p>
                 </div>
                 <Button

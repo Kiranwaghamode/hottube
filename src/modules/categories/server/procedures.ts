@@ -1,7 +1,6 @@
 import { db } from "@/db";
 import { categories } from "@/db/schema";
 import { createTRPCRouter, baseProcedure } from "@/trpc/init";
-import { TRPCError } from "@trpc/server";
 
 
 export const categoriesRouter = createTRPCRouter({

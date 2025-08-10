@@ -89,11 +89,11 @@ export const VideosSectionSuspense = () =>{
 
     return (
         <div>
-            <div className="border-y">
-                <Table>
+            <div className="border-y ">
+                <Table className="">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="pl-6 w-[718px]">Video</TableHead>
+                            <TableHead className="pl-6 w-[80vw]">Video</TableHead>
                             <TableHead >Visibility</TableHead>
                             <TableHead >Status</TableHead>
                             <TableHead >Date</TableHead>
@@ -104,7 +104,7 @@ export const VideosSectionSuspense = () =>{
                     </TableHeader>
                     <TableBody>
                         {videos.pages.flatMap((page)=> page.items).map((video)=>(
-                            <Link href={`/studio/videos/${video.id}`} key={video.id} legacyBehavior>
+                            <Link prefetch href={`/studio/videos/${video.id}`} key={video.id} legacyBehavior>
                             <TableRow className="cursor-pointer">
                                 <TableCell>
                                     <div className="flex items-center gap-4">

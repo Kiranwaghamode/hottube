@@ -1,5 +1,4 @@
 import { DEFAULT_LIMIT } from "@/constatns";
-import { HomeView } from "@/modules/home/ui/views/home-view";
 import { TrendingView } from "@/modules/home/ui/views/trending-view";
 import { HydrateClient, trpc } from "@/trpc/server";
 

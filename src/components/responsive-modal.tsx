@@ -1,8 +1,7 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import React from "react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "./ui/drawer";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
 
 interface ResponsiveModalProps {

@@ -7,7 +7,7 @@ export const HistoryView = ()=>{
             <div>
                 <h1 className="text-2xl font-bold">History</h1>
                 <p className="text-xs text-muted-foreground">
-                    Videos that you've watched
+                    Videos that you have watched
                 </p> 
             </div>
             <HistoryVideosSection/>

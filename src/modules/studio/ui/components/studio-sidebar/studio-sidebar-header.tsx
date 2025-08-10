@@ -13,7 +13,7 @@ export const StudioSidebarHeader = () =>{
         return (
             <SidebarMenuItem>
                 <SidebarMenuButton tooltip={"Your Profile"} asChild>
-                    <Link href={'/users/current'}>
+                    <Link prefetch href={'/users/current'}>
                         <UserAvatar
                         imageUrl={user?.imageUrl ?? "None"}
                         name={user?.fullName ?? "User"}

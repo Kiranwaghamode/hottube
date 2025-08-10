@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { commentReactions, videoReactions } from "@/db/schema";
+import { commentReactions } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";

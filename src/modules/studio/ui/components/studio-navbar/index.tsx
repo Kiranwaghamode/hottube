@@ -1,7 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import Image from "next/image"
 import Link from "next/link"
-import { SearchInput } from "./search-input"
 import { AuthButton } from "@/modules/auth/ui/components/auth-button"
 import { StudioUploadModal } from "../studio-upload-modal"
 
@@ -12,7 +11,7 @@ export const StudioNavbar = () =>{
             <div className="flex items-center gap-4 w-full">
                 <div className="flex items-center flex-shrink-0">
                     <SidebarTrigger/>
-                    <Link href={'/studio'}>
+                    <Link prefetch href={'/studio'} className="hidden md:block">
                         <div className="p-4 flex items-center gap-1">
                             <Image src="/logo.svg" alt="logo" width={32} height={32}/>
                             <p className="text-xl font-semibold tracking-tight"> Studio</p>

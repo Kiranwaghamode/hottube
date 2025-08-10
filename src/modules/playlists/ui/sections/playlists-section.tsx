@@ -3,8 +3,8 @@
 
 import { InfiniteScroll } from "@/components/infinite-scroll";
 import { DEFAULT_LIMIT } from "@/constatns";
-import { VideoGridCard, VideoGridCardSkeleton } from "@/modules/videos/ui/components/video-grid-card";
-import { VideoRowCard , VideoRowCardSkeleton} from "@/modules/videos/ui/components/video-row-card";
+import {  VideoGridCardSkeleton } from "@/modules/videos/ui/components/video-grid-card";
+import {  VideoRowCardSkeleton} from "@/modules/videos/ui/components/video-row-card";
 import { trpc } from "@/trpc/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -36,7 +36,7 @@ const PlaylistsSectionSkeleton = () =>{
             <div className="hidden flex-col gap-4 gap-y-10 md:flex">
                 {Array.from({length: 18})
                 .map((_, index)=>(
-                    <VideoGridCardSkeleton key={index}/>
+                    <VideoRowCardSkeleton key={index}/>
                 ))
                 }
             </div>

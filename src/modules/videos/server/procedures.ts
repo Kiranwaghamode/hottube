@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { subscriptions, users, videoReactions, videos, videoSelectSchema, videoUpdateSchema, videoViews } from "@/db/schema";
+import { subscriptions, users, videoReactions, videos, videoUpdateSchema, videoViews } from "@/db/schema";
 import { mux } from "@/lib/mux";
 import { workflow } from "@/lib/workflow";
 import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init";

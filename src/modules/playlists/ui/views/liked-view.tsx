@@ -7,7 +7,7 @@ export const LikedView = ()=>{
             <div>
                 <h1 className="text-2xl font-bold">Liked Videos</h1>
                 <p className="text-xs text-muted-foreground">
-                    Videos that you've liked
+                    Videos that you have liked
                 </p>
             </div>
             <LikedVideosSection/>
