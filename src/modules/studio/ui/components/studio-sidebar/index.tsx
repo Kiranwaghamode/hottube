@@ -20,7 +20,7 @@ export const StudioSidebar = () =>{
                         <StudioSidebarHeader/>
                         <SidebarMenuItem>
                             <SidebarMenuButton isActive={pathname === '/studio/videos'} tooltip={'Exit Studio'} asChild>
-                                <Link prefetch href={'/studio/videos'}>
+                                <Link prefetch href={'/studio'}>
                                 <VideoIcon className="size-5"/>
                                 <span className="text-sm">Content</span>
                                 </Link>
